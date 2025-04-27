@@ -28,9 +28,15 @@ router.get("/:id", async (req, res) => {
 
 // ✏️ Update
 router.put("/:id", async (req, res) => {
-  const updated = await Product.d(req.params.id, req.body, { new: true });
-  res.json(updated);
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Yangilashda xatolik yuz berdi' });
+  }
 });
+
 
 // ❌ Delete
 router.delete("/:id", async (req, res) => {
